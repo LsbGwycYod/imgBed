@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nbpt.lilingyi.campusmanage.dao.StudentDao">
+    <select id="selectById" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+        select * from student where id=#{id}
+    </select>
+    <select id="selectAll" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+        select * from student
+    </select>
+    <insert id="insert" parameterType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+        insert into student(user_name,age,name,gender,birthday,entry_time,graduation_time,address,class_id)
+        values (#{userName},#{age},#{name},#{gender},#{birthday},#{entryTime},#{graduationTime},#{address},#{classId});
+    </insert>
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into student(user_name,age,name,gender,birthday,entry_time,graduation_time,address,class_id)
+        values
+        <foreach collection="list" item="student" separator=",">
+            (#{student.userName},#{student.age},#{student.name},#{student.gender},#{student.birthday},#{student.entryTime},#{student.graduationTime},#{student.address},#{student.classId})
+        </foreach>
+    </insert>
+    <delete id="deleteById">
+        delete from student where id=#{id}
+    </delete>
+    <delete id="batchDeleteByClassId">
+        delete from student where class_id=#{classId}
+    </delete>
+    <update id="update" parameterType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+            update student set
+                name=#{name},
+                age=#{age},
+                gender=#{gender},
+                birthday=#{birthday},
+                entry_time=#{entryTime},
+                graduation_time=#{graduationTime},
+                address=#{address},
+                class_id=#{classId}
+                where id=#{id}
+    </update>
+</mapper>
