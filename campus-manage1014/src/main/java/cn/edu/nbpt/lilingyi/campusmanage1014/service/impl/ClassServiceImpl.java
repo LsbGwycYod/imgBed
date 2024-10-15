@@ -22,6 +22,7 @@ public class ClassServiceImpl implements ClassService {
     StudentMapper studentMapper;
     @Override
     public int deleteByPrimaryKey(Integer id) {
+        studentMapper.batchDeleteByClassId(id);
         return classMapper.deleteByPrimaryKey(id);
     }
 
@@ -35,7 +36,9 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public ClassStudent selectByPrimaryKey(Integer id) {
-        return classMapper.selectByPrimaryKey(id);
+        ClassStudent classStudent=classMapper.selectByPrimaryKey(id);
+        classStudent.setStudents(studentMapper.selectByClassId(id));
+        return classStudent;
     }
 
     @Override

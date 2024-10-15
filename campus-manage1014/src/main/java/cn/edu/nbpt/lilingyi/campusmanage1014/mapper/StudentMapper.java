@@ -20,11 +20,13 @@ public interface StudentMapper {
     int insertSelective(Student record);
 
     Student selectByPrimaryKey(Integer id);
+    List<Student> selectByClassId(Integer classId);
 
     int updateByPrimaryKeySelective(Student record);
 
     int batchInsert(List<Student> students);
     int batchDeleteByClassId(Integer classId);
+
     List<Student> selectAll();
     List<Student> selectLimit(@Param("start") Integer start,@Param("pageSize") Integer pageSize);
 }

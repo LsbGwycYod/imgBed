@@ -31,6 +31,12 @@
         from student
         where  id = #{id}
     </select>
+    <select id="selectByClassId" parameterType="integer" resultType="cn.edu.nbpt.lilingyi.campusmanage1014.pojo.entity.Student">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+        where class_id = #{classId}
+    </select>
     <select id="selectAll" resultType="cn.edu.nbpt.lilingyi.campusmanage1014.pojo.entity.Student">
         select * from student
     </select>
