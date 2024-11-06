@@ -7,7 +7,9 @@ public enum ErrorCode {
     FORBIDDEN(503, "未成年人禁止访问"),
     PARAMS_ERROR(504,"参数不合法"),
     NULL(502, "内容为空"),
-    UPDATE_ERROR(506, "更新失败");
+    UPDATE_ERROR(506, "更新失败"),
+    FILE_STORAGE_ERROR(507,"文件操作失败"),
+    FILE_NOT_FOUND(508,"文件未找到");
 
     private Integer code;
     private String msg;

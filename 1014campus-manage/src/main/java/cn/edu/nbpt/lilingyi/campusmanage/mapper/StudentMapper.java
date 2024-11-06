@@ -1,6 +1,7 @@
 package cn.edu.nbpt.lilingyi.campusmanage.mapper;
 
 import cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student;
+import cn.edu.nbpt.lilingyi.campusmanage.pojo.vo.StudentClassVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,7 +29,7 @@ public interface StudentMapper {
     int batchInsert(List<Student> students);
     int batchDeleteByClassId(Integer classId);
 
-    List<Student> selectAll();
+    List<StudentClassVo> selectAll();
     List<Student> selectLimit(@Param("start") Integer start,@Param("pageSize") Integer pageSize);
-    List<Student> selectByTerm(@Param("name") String name, @Param("gender") Short gender, @Param("birthdayStart") Date birthdayStart, @Param("birthdayEnd") Date birthdayEnd);
+    List<StudentClassVo> selectByTerm(@Param("id") Integer id, @Param("name") String name, @Param("gender") Integer gender);
 }

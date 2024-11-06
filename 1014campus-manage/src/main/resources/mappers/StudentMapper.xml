@@ -19,6 +19,17 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="ClassMap" type="Class">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="StudentClassMap" type="cn.edu.nbpt.lilingyi.campusmanage.pojo.vo.StudentClassVo" extends="BaseResultMap">
+        <association property="aClass" javaType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Class" columnPrefix="class_" resultMap="ClassMap">
+        </association>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id,user_name,age,
         name,gender,birthday,
@@ -29,7 +40,7 @@
         select
         <include refid="Base_Column_List"/>
         from student
-        where  id = #{id}
+        where id = #{id}
     </select>
     <select id="selectByClassId" parameterType="integer" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
         select
@@ -37,24 +48,47 @@
         from student
         where class_id = #{classId}
     </select>
-    <select id="selectAll" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
-        select * from student
+    <select id="selectAll" resultMap="StudentClassMap">
+        select
+            s.id,
+            s.user_name,
+            s.age,
+            s.name,
+            s.gender,
+            s.birthday,
+            s.entry_time,
+            s.graduation_time,
+            s.address,
+            s.class_id,
+            c.id as class_id,
+            c.name as class_name,
+            c.code as class_code
+        from student as s left join class c on s.class_id = c.id
     </select>
     <select id="selectLimit" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
         select * from student limit #{start},#{pageSize}
     </select>
-    <select id="selectByTerm" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+    <select id="selectByTerm" resultMap="StudentClassMap">
         select
-        <include refid="Base_Column_List"/>
-        from student
+            s.id,
+            s.user_name,
+            s.age,
+            s.name,
+            s.gender,
+            s.birthday,
+            s.entry_time,
+            s.graduation_time,
+            s.address,
+            s.class_id,
+            c.id as class_id,
+            c.name as class_name,
+            c.code as class_code
+        from student as s left join class c on s.class_id = c.id
         <where>
-            <if test="name != null">and name like concat('%',#{name},'%')</if>
-            <if test="gender != null">and gender = #{gender}</if>
-            <if test="birthdayStart != null and birthdayEnd != null">
-                and birthday between #{birthdayStart} and #{birthdayEnd}
-            </if>
+            <if test="id != null">and s.id = #{id}</if>
+            <if test="name != null">and s.name like concat('%',#{name},'%')</if>
+            <if test="gender != null">and s.gender = #{gender}</if>
         </where>
-        order by id
     </select>
     <delete id="deleteByPrimaryKey" parameterType="integer">
         delete from student

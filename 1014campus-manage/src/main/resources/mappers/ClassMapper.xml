@@ -11,17 +11,80 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <resultMap id="StudentMap" type="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Student">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="TINYINT"/>
+        <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+        <result property="entryTime" column="entry_time" jdbcType="TIMESTAMP"/>
+        <result property="graduationTime" column="graduation_time" jdbcType="TIMESTAMP"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    
+    <resultMap id="ClassStudentMap" type="cn.edu.nbpt.lilingyi.campusmanage.pojo.vo.ClassStudentVo" extends="BaseResultMap">
+        <collection property="students" resultMap="StudentMap" columnPrefix="student_">
 
+        </collection>
+    </resultMap>
     <sql id="Base_Column_List">
         id,name,code,
         create_time,update_time
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="integer" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.params.ClassStudent">
+    <select id="selectByPrimaryKey" parameterType="integer" resultType="cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Class">
         select
-        *
+        <include refid="Base_Column_List" />
         from class
-        where  id = #{id,jdbcType=INTEGER} 
+        where  id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="ClassStudentMap">
+        select
+            c.id,
+            c.name,
+            c.code,
+            s.id as student_id,
+            s.user_name as student_user_name,
+            s.age as student_age,
+            s.name as student_name,
+            s.gender as student_gender,
+            s.birthday as student_birthday,
+            s.entry_time as student_entry_time,
+            s.graduation_time as student_graduation_time,
+            s.address as student_address,
+            s.class_id as student_class_id
+        from class as c
+            left join student as s on c.id =s.class_id
+        order by c.id,s.id
+    </select>
+    <select id="selectByTerm" resultMap="ClassStudentMap">
+        select
+            c.id,
+            c.name,
+            c.code,
+            s.id as student_id,
+            s.user_name as student_user_name,
+            s.age as student_age,
+            s.name as student_name,
+            s.gender as student_gender,
+            s.birthday as student_birthday,
+            s.entry_time as student_entry_time,
+            s.graduation_time as student_graduation_time,
+            s.address as student_address,
+            s.class_id as student_class_id
+        from class as c
+                 left join student as s on c.id =s.class_id
+        <where>
+            <if test="id != null"> and c.id = #{id} </if>
+            <if test="name !=null">and c.name like concat('%',#{name},'%')</if>
+            <if test="code !=null">and c.code =#{code}</if>
+        </where>
+        order by c.id,s.id
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="integer">

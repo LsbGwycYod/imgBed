@@ -13,11 +13,11 @@ import java.util.List;
 public class PageBean<T> {
     private Integer total;
     private List<T> rows;
-    public static <T> PageBean<T> page(Integer pageNum, Integer pageSize,List<T> list) {
-        Page<T> studentPage= (Page<T>) list;
+    public static <T> PageBean<T> page(List<T> list) {
+        Page<T> page= (Page<T>) list;
         PageBean pageBean=new PageBean<>();
         pageBean.setRows(list);
-        pageBean.setTotal((int) studentPage.getTotal());
+        pageBean.setTotal((int) page.getTotal());
         return pageBean;
     }
 }

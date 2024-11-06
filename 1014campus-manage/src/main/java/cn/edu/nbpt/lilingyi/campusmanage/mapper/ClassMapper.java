@@ -1,7 +1,12 @@
 package cn.edu.nbpt.lilingyi.campusmanage.mapper;
 
+import cn.edu.nbpt.lilingyi.campusmanage.pojo.entity.Class;
 import cn.edu.nbpt.lilingyi.campusmanage.pojo.params.ClassStudent;
+import cn.edu.nbpt.lilingyi.campusmanage.pojo.vo.ClassStudentVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author 22273
@@ -16,8 +21,9 @@ public interface ClassMapper {
 
     int insertSelective(ClassStudent classStudent);
 
-    ClassStudent selectByPrimaryKey(Integer id);
+    Class selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(ClassStudent classStudent);
-
+    List<ClassStudentVo> selectAll();
+    List<ClassStudentVo> selectByTerm(@Param("id") Integer id, @Param("name") String name, @Param("code") String code);
 }
